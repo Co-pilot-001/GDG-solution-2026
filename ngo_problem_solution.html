@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Resource Allocation - NGO Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            border-bottom: 3px solid #ff9800;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .emblem {
+            width: 50px;
+            height: 50px;
+            background: #003d6b;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: gold;
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        .org-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .org-title-en {
+            font-size: 11px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .org-title-hi {
+            font-size: 16px;
+            color: #003d6b;
+            font-weight: bold;
+        }
+
+        .org-title-main {
+            font-size: 22px;
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        .tagline {
+            color: #d32f2f;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 2px solid #ff9800;
+        }
+
+        /* Header Navigation */
+        .header-nav {
+            background: #003d6b;
+            color: white;
+            padding: 0;
+            display: flex;
+            align-items: stretch;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            overflow-x: auto;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-right: 1px solid #004080;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            background: #004080;
+        }
+
+        .nav-item.active {
+            background: #ff9800;
+            color: white;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: grid;
+            grid-template-columns: 220px 1fr 280px;
+            gap: 0;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Left Sidebar */
+        .left-sidebar {
+            background: white;
+            border-right: 1px solid #ddd;
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-box {
+            border: 1px solid #ddd;
+            margin: 10px;
+            background: white;
+        }
+
+        .sidebar-header {
+            background: #ff9800;
+            color: white;
+            padding: 10px 12px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .sidebar-content {
+            padding: 10px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .problem-box {
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .problem-title {
+            color: #d32f2f;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .problem-text {
+            color: #666;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .solution-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .solution-title {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .solution-text {
+            color: #2e7d32;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .step-list {
+            list-style: none;
+        }
+
+        .step-list li {
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 12px;
+        }
+
+        .step-list li:before {
+            content: "→ ";
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        /* Center Content */
+        .center-content {
+            background: white;
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        .alert-banner {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-left: 4px solid #d32f2f;
+            padding: 12px 15px;
+            margin: 10px;
+            font-size: 12px;
+            color: #856404;
+        }
+
+        .alert-banner strong {
+            color: #d32f2f;
+        }
+
+        .content-header {
+            background: white;
+            border-bottom: 2px solid #ff9800;
+            padding: 15px 20px;
+            margin: 10px;
+            margin-bottom: 0;
+        }
+
+        .content-header h2 {
+            color: #ff9800;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .content-header p {
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            border-bottom: 1px solid #ddd;
+            margin: 10px;
+            display: flex;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 16px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            color: #333;
+            margin-right: -1px;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: #fff;
+        }
+
+        .tab.active {
+            background: white;
+            border-top: 3px solid #ff9800;
+            color: #ff9800;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Problem Visualization */
+        .problem-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .problem-item {
+            background: #ffebee;
+            border: 2px solid #d32f2f;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .problem-item-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .problem-item-title {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .problem-item-desc {
+            color: #666;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .arrow-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff9800;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* Solution Visualization */
+        .solution-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .solution-item {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .solution-item-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .solution-item-title {
+            color: #2e7d32;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .solution-item-desc {
+            color: #2e7d32;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* Data Sources */
+        .data-source-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .data-source {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-left: 4px solid #ff9800;
+            padding: 12px;
+            border-radius: 3px;
+        }
+
+        .data-source-label {
+            color: #003d6b;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .data-source-desc {
+            color: #666;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .data-source-count {
+            background: #ff9800;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        /* Heatmap Showcase */
+        .heatmap-showcase {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .heatmap-region {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            border-radius: 3px;
+        }
+
+        .region-name {
+            font-weight: bold;
+            color: #003d6b;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .intensity-bar {
+            width: 100%;
+            height: 20px;
+            background: #ddd;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .intensity-critical {
+            background: linear-gradient(90deg, #d32f2f 0%, #ff5252 100%);
+            height: 100%;
+        }
+
+        .intensity-high {
+            background: linear-gradient(90deg, #ff9800 0%, #ffb74d 100%);
+            height: 100%;
+        }
+
+        .intensity-medium {
+            background: linear-gradient(90deg, #ffc107 0%, #ffeb3b 100%);
+            height: 100%;
+        }
+
+        .intensity-low {
+            background: linear-gradient(90deg, #4caf50 0%, #81c784 100%);
+            height: 100%;
+        }
+
+        .region-needs {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Allocation Table */
+        .allocation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .allocation-table th {
+            background: #003d6b;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .allocation-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            font-size: 12px;
+        }
+
+        .allocation-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .allocation-table .critical {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .allocation-table .optimal {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            background: white;
+            padding: 10px;
+            border-left: 1px solid #ddd;
+            overflow-y: auto;
+        }
+
+        .right-box {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .right-header {
+            background: #003d6b;
+            color: white;
+            padding: 10px 12px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .right-content {
+            padding: 10px;
+            font-size: 11px;
+        }
+
+        .stat-right {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-right:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label-right {
+            color: #666;
+        }
+
+        .stat-value-right {
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        .impact-badge {
+            background: #e8f5e9;
+            border-left: 3px solid #4caf50;
+            padding: 8px;
+            margin-top: 10px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 180px 1fr 240px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-sidebar, .right-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="logo-section">
+            <div class="emblem">🏛️</div>
+            <div class="org-title">
+                <div class="org-title-en">Social Welfare Department</div>
+                <div class="org-title-hi">आपले सरकार</div>
+                <div class="org-title-main">NGO Hub</div>
+            </div>
+            <div class="tagline">💡 Data-Driven Volunteer Coordination</div>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <div class="header-nav">
+        <div class="nav-item active" onclick="switchTab('problem')">⚠️ The Problem</div>
+        <div class="nav-item" onclick="switchTab('solution')">✓ Our Solution</div>
+        <div class="nav-item" onclick="switchTab('aggregate')">📤 Aggregate Data</div>
+        <div class="nav-item" onclick="switchTab('heatmap')">🗺️ View Heatmap</div>
+        <div class="nav-item" onclick="switchTab('allocate')">📊 Smart Allocation</div>
+        <div class="nav-item" onclick="switchTab('impact')">🎯 Track Impact</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <div class="sidebar-box">
+                <div class="sidebar-header">⚠️ THE CHALLENGE</div>
+                <div class="sidebar-content">
+                    <div class="problem-box">
+                        <div class="problem-title">Data Scattered</div>
+                        <div class="problem-text">Paper surveys, field reports, spreadsheets - information spread across different places</div>
+                    </div>
+                    <div class="problem-box">
+                        <div class="problem-title">No Visibility</div>
+                        <div class="problem-text">Can't see where biggest needs actually are</div>
+                    </div>
+                    <div class="problem-box">
+                        <div class="problem-title">Poor Allocation</div>
+                        <div class="problem-text">Volunteers deployed randomly, not where most needed</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-box">
+                <div class="sidebar-header">✓ OUR SOLUTION</div>
+                <div class="sidebar-content">
+                    <div class="solution-box">
+                        <div class="solution-title">1. Consolidate</div>
+                        <div class="solution-text">Upload all data from different sources</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-title">2. Visualize</div>
+                        <div class="solution-text">See hotspots on interactive heatmap</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-title">3. Optimize</div>
+                        <div class="solution-text">Deploy volunteers smartly based on needs</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Content -->
+        <div class="center-content">
+            <div class="alert-banner">
+                📊 <strong>GOAL:</strong> Transform scattered community data into actionable insights for better volunteer coordination and resource allocation
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <div class="tab active" onclick="switchTab('problem')">⚠️ Problem</div>
+                <div class="tab" onclick="switchTab('solution')">✓ Solution</div>
+                <div class="tab" onclick="switchTab('aggregate')">📤 Aggregate</div>
+                <div class="tab" onclick="switchTab('heatmap')">🗺️ Heatmap</div>
+                <div class="tab" onclick="switchTab('allocate')">📊 Allocate</div>
+                <div class="tab" onclick="switchTab('impact')">🎯 Impact</div>
+            </div>
+
+            <!-- Problem Tab -->
+            <div id="problem" class="tab-content active">
+                <div class="content-header">
+                    <h2>⚠️ The Core Problem</h2>
+                    <p>Why NGOs struggle with resource allocation</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div class="problem-flow">
+                        <div class="problem-item">
+                            <div class="problem-item-icon">📋</div>
+                            <div class="problem-item-title">Paper Surveys</div>
+                            <div class="problem-item-desc">Field workers collect data on paper forms</div>
+                        </div>
+                        <div class="arrow-box">→</div>
+                        <div class="problem-item">
+                            <div class="problem-item-icon">📊</div>
+                            <div class="problem-item-title">Scattered Files</div>
+                            <div class="problem-item-desc">Stored in different spreadsheets & folders</div>
+                        </div>
+                        <div class="arrow-box">→</div>
+                        <div class="problem-item">
+                            <div class="problem-item-icon">❌</div>
+                            <div class="problem-item-title">No Visibility</div>
+                            <div class="problem-item-desc">Can't see the big picture of community needs</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #ffebee; border-left: 4px solid #d32f2f; padding: 12px; margin-top: 20px; border-radius: 3px;">
+                        <div style="color: #d32f2f; font-weight: bold; margin-bottom: 8px;">❌ RESULT:</div>
+                        <ul style="font-size: 12px; color: #666; margin-left: 20px; line-height: 1.8;">
+                            <li>Volunteers deployed to random areas</li>
+                            <li>Some critical regions get overlooked</li>
+                            <li>Resources wasted on low-priority areas</li>
+                            <li>Can't measure real impact</li>
+                            <li>Inefficient use of limited volunteer base</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solution Tab -->
+            <div id="solution" class="tab-content">
+                <div class="content-header">
+                    <h2>✓ Our Solution Framework</h2>
+                    <p>How we solve the data & allocation problem</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div class="solution-flow">
+                        <div class="solution-item">
+                            <div class="solution-item-icon">🔀</div>
+                            <div class="solution-item-title">CONSOLIDATE</div>
+                            <div class="solution-item-desc">Merge data from all sources into one platform</div>
+                        </div>
+                        <div class="arrow-box" style="color: #4caf50;">→</div>
+                        <div class="solution-item">
+                            <div class="solution-item-icon">🗺️</div>
+                            <div class="solution-item-title">VISUALIZE</div>
+                            <div class="solution-item-desc">Interactive heatmap shows need hotspots</div>
+                        </div>
+                        <div class="arrow-box" style="color: #4caf50;">→</div>
+                        <div class="solution-item">
+                            <div class="solution-item-icon">🎯</div>
+                            <div class="solution-item-title">ALLOCATE</div>
+                            <div class="solution-item-desc">Deploy volunteers based on actual needs</div>
+                        </div>
+                        <div class="arrow-box" style="color: #4caf50;">→</div>
+                        <div class="solution-item">
+                            <div class="solution-item-icon">📈</div>
+                            <div class="solution-item-title">MEASURE</div>
+                            <div class="solution-item-desc">Track impact & optimize continuously</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 12px; margin-top: 20px; border-radius: 3px;">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 8px;">✓ BENEFITS:</div>
+                        <ul style="font-size: 12px; color: #2e7d32; margin-left: 20px; line-height: 1.8;">
+                            <li><strong>Better Targeting:</strong> Focus on areas with highest needs first</li>
+                            <li><strong>Efficient Deployment:</strong> Volunteers go where they're needed most</li>
+                            <li><strong>Data-Driven:</strong> Decisions based on facts, not guesses</li>
+                            <li><strong>Measurable Impact:</strong> Track outcomes by region & category</li>
+                            <li><strong>Scalable:</strong> Add more volunteers/resources as needed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aggregate Data Tab -->
+            <div id="aggregate" class="tab-content">
+                <div class="content-header">
+                    <h2>📤 Step 1: Aggregate Data from Multiple Sources</h2>
+                    <p>Consolidate scattered community data</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 12px; margin-bottom: 15px; border-radius: 3px;">
+                        <strong style="color: #856404;">📝 Example Sources of Community Data:</strong>
+                    </div>
+
+                    <div class="data-source-grid">
+                        <div class="data-source">
+                            <div class="data-source-label">📋 Paper Surveys</div>
+                            <div class="data-source-desc">Field workers filled during visits</div>
+                            <div class="data-source-count">452 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">📊 Excel Sheets</div>
+                            <div class="data-source-desc">Old databases with community needs</div>
+                            <div class="data-source-count">328 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">📱 Mobile App Data</div>
+                            <div class="data-source-desc">Data collected via volunteer apps</div>
+                            <div class="data-source-count">215 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">🏥 Health Center Reports</div>
+                            <div class="data-source-desc">Community health clinic data</div>
+                            <div class="data-source-count">189 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">🎓 School Data</div>
+                            <div class="data-source-desc">Education needs from schools</div>
+                            <div class="data-source-count">267 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">🏢 Government Surveys</div>
+                            <div class="data-source-desc">District level government data</div>
+                            <div class="data-source-count">156 Records</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #e8f5e9; border: 1px solid #4caf50; padding: 12px; margin-top: 15px; border-radius: 3px; text-align: center;">
+                        <div style="color: #2e7d32; font-weight: bold; font-size: 14px;">✓ TOTAL DATA CONSOLIDATED</div>
+                        <div style="color: #2e7d32; font-weight: bold; font-size: 24px; margin-top: 5px;">1,607 Records</div>
+                        <div style="color: #666; font-size: 12px; margin-top: 8px;">From 6 different sources → Now in ONE platform!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Heatmap Tab -->
+            <div id="heatmap" class="tab-content">
+                <div class="content-header">
+                    <h2>🗺️ Step 2: Visualize Needs on Interactive Heatmap</h2>
+                    <p>See where community needs are highest</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 12px; margin-bottom: 15px; border-radius: 3px; font-size: 12px;">
+                        <strong style="color: #856404;">🎨 Color Intensity = Severity of Need</strong>
+                        <div style="margin-top: 8px; display: flex; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 20px; height: 20px; background: #d32f2f; border-radius: 3px;"></div>
+                                <span>Critical (95-100%)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 20px; height: 20px; background: #ff9800; border-radius: 3px;"></div>
+                                <span>High (75-94%)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 20px; height: 20px; background: #ffc107; border-radius: 3px;"></div>
+                                <span>Medium (50-74%)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 20px; height: 20px; background: #4caf50; border-radius: 3px;"></div>
+                                <span>Emerging (&lt;50%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="heatmap-showcase">
+                        <div class="heatmap-region">
+                            <div class="region-name">🔴 Mumbai</div>
+                            <div class="intensity-bar"><div class="intensity-critical" style="width: 95%;"></div></div>
+                            <div class="region-needs">950 needs | 120 volunteers</div>
+                        </div>
+                        <div class="heatmap-region">
+                            <div class="region-name">🟠 Pune</div>
+                            <div class="intensity-bar"><div class="intensity-high" style="width: 78%;"></div></div>
+                            <div class="region-needs">780 needs | 95 volunteers</div>
+                        </div>
+                        <div class="heatmap-region">
+                            <div class="region-name">🟠 Thane</div>
+                            <div class="intensity-bar"><div class="intensity-high" style="width: 89%;"></div></div>
+                            <div class="region-needs">890 needs | 110 volunteers</div>
+                        </div>
+                        <div class="heatmap-region">
+                            <div class="region-name">🟡 Nagpur</div>
+                            <div class="intensity-bar"><div class="intensity-medium" style="width: 62%;"></div></div>
+                            <div class="region-needs">620 needs | 65 volunteers</div>
+                        </div>
+                        <div class="heatmap-region">
+                            <div class="region-name">🟡 Nashik</div>
+                            <div class="intensity-bar"><div class="intensity-medium" style="width: 54%;"></div></div>
+                            <div class="region-needs">540 needs | 55 volunteers</div>
+                        </div>
+                        <div class="heatmap-region">
+                            <div class="region-name">🟢 Aurangabad</div>
+                            <div class="intensity-bar"><div class="intensity-low" style="width: 48%;"></div></div>
+                            <div class="region-needs">480 needs | 45 volunteers</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #e8f5e9; border: 1px solid #4caf50; padding: 12px; margin-top: 15px; border-radius: 3px;">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 8px;">✓ INSTANT INSIGHTS:</div>
+                        <ul style="font-size: 12px; color: #2e7d32; margin-left: 20px;">
+                            <li><strong>Mumbai & Thane:</strong> Critical areas - need immediate reinforcement</li>
+                            <li><strong>Pune:</strong> High priority - urgent volunteer deployment needed</li>
+                            <li><strong>Nagpur & Nashik:</strong> Medium priority - can wait a bit</li>
+                            <li><strong>Aurangabad:</strong> Emerging needs - monitor & plan ahead</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Allocation Tab -->
+            <div id="allocate" class="tab-content">
+                <div class="content-header">
+                    <h2>📊 Step 3: Smart Volunteer Allocation</h2>
+                    <p>Deploy resources based on actual needs</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 12px; margin-bottom: 15px; border-radius: 3px; font-size: 12px;">
+                        <strong style="color: #856404;">🎯 Allocation Logic: Match volunteers to highest-need areas</strong>
+                    </div>
+
+                    <table class="allocation-table">
+                        <thead>
+                            <tr>
+                                <th>Region</th>
+                                <th>Needs</th>
+                                <th>Current Volunteers</th>
+                                <th>Deficit</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Mumbai</strong></td>
+                                <td class="critical">950</td>
+                                <td>120</td>
+                                <td class="critical">-830</td>
+                                <td style="color: #d32f2f; font-weight: bold;">🚨 CRITICAL - Deploy 85 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Thane</strong></td>
+                                <td class="critical">890</td>
+                                <td>110</td>
+                                <td class="critical">-780</td>
+                                <td style="color: #d32f2f; font-weight: bold;">🚨 CRITICAL - Deploy 78 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pune</strong></td>
+                                <td class="critical">780</td>
+                                <td>95</td>
+                                <td class="critical">-685</td>
+                                <td style="color: #ff9800; font-weight: bold;">⚠️ HIGH - Deploy 55 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nagpur</strong></td>
+                                <td>620</td>
+                                <td>65</td>
+                                <td>-555</td>
+                                <td style="color: #ff9800; font-weight: bold;">⚠️ MEDIUM - Deploy 35 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nashik</strong></td>
+                                <td>540</td>
+                                <td>55</td>
+                                <td>-485</td>
+                                <td style="color: #ff9800; font-weight: bold;">⚠️ MEDIUM - Deploy 20 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aurangabad</strong></td>
+                                <td>480</td>
+                                <td>45</td>
+                                <td>-435</td>
+                                <td style="color: #4caf50; font-weight: bold;">✓ LOW - Monitor</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="background: #e8f5e9; border: 1px solid #4caf50; padding: 12px; margin-top: 15px; border-radius: 3px;">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 8px;">✓ RECOMMENDED ALLOCATION:</div>
+                        <div style="font-size: 12px; color: #2e7d32; line-height: 1.8;">
+                            <div>• <strong>Priority 1 (Critical):</strong> Send 85 volunteers to Mumbai + 78 to Thane immediately</div>
+                            <div>• <strong>Priority 2 (High):</strong> Send 55 volunteers to Pune this week</div>
+                            <div>• <strong>Priority 3 (Medium):</strong> Send 35 to Nagpur + 20 to Nashik next 2 weeks</div>
+                            <div>• <strong>Priority 4 (Emerging):</strong> Monitor Aurangabad - allocate as resources free up</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Tab -->
+            <div id="impact" class="tab-content">
+                <div class="content-header">
+                    <h2>🎯 Step 4: Track Impact & Optimize</h2>
+                    <p>Measure results and continuously improve</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div style="background: #e8f5e9; border: 1px solid #4caf50; padding: 12px; margin-bottom: 15px; border-radius: 3px;">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 10px;">📈 BEFORE vs AFTER</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
+                            <div>
+                                <div style="color: #d32f2f; font-weight: bold;">❌ BEFORE (Scattered Data)</div>
+                                <ul style="margin-left: 15px; color: #666;">
+                                    <li>Random volunteer deployment</li>
+                                    <li>Coverage = 11% average</li>
+                                    <li>High-need areas neglected</li>
+                                    <li>No data on impact</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div style="color: #4caf50; font-weight: bold;">✓ AFTER (Data-Driven)</div>
+                                <ul style="margin-left: 15px; color: #2e7d32;">
+                                    <li>Targeted deployment by need</li>
+                                    <li>Coverage = 32% after allocation</li>
+                                    <li>Critical areas prioritized</li>
+                                    <li>Real-time impact tracking</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 12px; border-radius: 3px;">
+                        <div style="color: #003d6b; font-weight: bold; margin-bottom: 10px;">📊 SAMPLE IMPACT METRICS</div>
+                        <table class="allocation-table" style="margin: 0;">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Before</th>
+                                    <th>After (Projected)</th>
+                                    <th>Improvement</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Volunteer Coverage</strong></td>
+                                    <td>11%</td>
+                                    <td>32%</td>
+                                    <td class="optimal">+191% ⬆️</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Communities Reached</strong></td>
+                                    <td>500</td>
+                                    <td>1,450</td>
+                                    <td class="optimal">+190% ⬆️</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Critical Areas Served</strong></td>
+                                    <td>30%</td>
+                                    <td>89%</td>
+                                    <td class="optimal">+60% ⬆️</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resource Waste</strong></td>
+                                    <td>45%</td>
+                                    <td>8%</td>
+                                    <td class="optimal">-37% ⬇️</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <div class="right-box">
+                <div class="right-header">📊 CURRENT STATUS</div>
+                <div class="right-content">
+                    <div class="stat-right">
+                        <span class="stat-label-right">Data Sources Connected:</span>
+                        <span class="stat-value-right">6/6</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Records Consolidated:</span>
+                        <span class="stat-value-right">1,607</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Districts Mapped:</span>
+                        <span class="stat-value-right">6</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Total Needs:</span>
+                        <span class="stat-value-right">4,230</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Volunteers:</span>
+                        <span class="stat-value-right">490</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Current Coverage:</span>
+                        <span class="stat-value-right" style="color: #d32f2f;">11%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-box">
+                <div class="right-header">✓ SOLUTION BENEFITS</div>
+                <div class="right-content" style="font-size: 11px; line-height: 1.6;">
+                    <div class="impact-badge">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 5px;">🎯 Targeted Allocation</div>
+                        <div>Focus volunteers where needed most</div>
+                    </div>
+                    <div class="impact-badge">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 5px;">📈 Better Coverage</div>
+                        <div>3x improvement in community reach</div>
+                    </div>
+                    <div class="impact-badge">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 5px;">💡 Data-Driven</div>
+                        <div>Decisions based on facts, not guesses</div>
+                    </div>
+                    <div class="impact-badge">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 5px;">📊 Measurable</div>
+                        <div>Track real impact by region & category</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            const allTabs = document.querySelectorAll('.tab-content');
+            allTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active from all tab buttons
+            const allButtons = document.querySelectorAll('.tab, .nav-item');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Add active to clicked buttons
+            document.querySelectorAll(`[onclick*="${tabName}"]`).forEach(el => {
+                el.classList.add('active');
+            });
+        }
+    </script>
+</body>
+</html>

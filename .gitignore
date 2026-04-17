@@ -1,0 +1,29 @@
+SRAS/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Python caches and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Python tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local databases and logs
+*.db
+*.sqlite3
+*.log
+
+# Editor folders
+.idea/
+.vscode/
